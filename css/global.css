@@ -8,8 +8,6 @@
 body {
   background: #faf6ed;
   color: #222;
-  display: grid;
-  grid-template-columns: 1fr 120px minmax(300px, 800px) 1fr;
 }
 
 img {
@@ -17,11 +15,17 @@ img {
   max-width: 100%;
 }
 
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 120px minmax(300px, 800px) 1fr;
+}
+
 .menu {
   grid-column: 3 / 5;
   margin-top: 2rem;
   margin-bottom: 2rem;
   background: #fb5;
+  position: relative;
 }
 
 .menu ul {
@@ -40,6 +44,12 @@ img {
   text-transform: uppercase;
   font-size: 0.875rem;
   letter-spacing: 0.1em;
+}
+
+.login {
+  margin-right: 50px;
+  position: absolute;
+  right: 0;
 }
 
 .grid-section {
@@ -186,16 +196,23 @@ img {
 }
 
 /*o .js antes da classe atrelado a uma classe no HTMl proporciona que uma pessoa visualize o conteúdo mesmo que o JS dele esteja desabilitado*/
-.js .js-tabcontent section {
+.js [data-tab="content"] section {
   display: none;
 }
 
-.js-tabcontent section.ativo {
+[data-tab="content"] section.ativo {
   display: block !important ;
-  animation: show 0.5s forwards;
 }
 
-@keyframes show {
+[data-tab="content"] section.ativo.show-right {
+  animation: show-right 0.5s forwards;
+}
+
+[data-tab="content"] section.ativo.show-down {
+  animation: show-down 0.5s forwards;
+}
+
+@keyframes show-right {
   from {
     opacity: 0;
     transform: translate3d(-30px, 0, 0);
@@ -206,20 +223,31 @@ img {
   }
 }
 
-.js-accordion dd {
+@keyframes show-down {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -30px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.js [data-anime="accordion"] dd {
   display: none;
 }
 
-.js-accordion dt::after {
+[data-anime="accordion"] dt::after {
   content: "↴";
   margin-left: 10px;
 }
 
-.js-accordion dt.ativo::after {
+[data-anime="accordion"] dt.ativo::after {
   content: "⬏";
 }
 
-.js-accordion dd.ativo {
+[data-anime="accordion"] dd.ativo {
   display: block;
   animation: slideDown 0.5s forwards;
 }
@@ -235,25 +263,53 @@ img {
   }
 }
 
-.js .js-scroll {
+.js [data-anime="scroll"] {
   opacity: 0;
   transform: translate3d(-30px, 0, 0);
   transition: 0.3s;
 }
 
-.js .js-scroll.ativo {
+.js [data-anime="scroll"].ativo {
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
 
+[data-semana]::after {
+  display: inline-block;
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: #e54;
+  border-radius: 50%;
+  margin-left: 4px;
+  border: 2px solid #000;
+}
+
+[data-semana].aberto::after {
+  background: #3f4;
+}
+
+.btc-preco {
+  background: #3f4;
+  padding: 0.2rem 0.5rem;
+  font-weight: bold;
+  border-radius: 2px;
+}
+
 @media only screen and (max-width: 700px) {
-  body {
+  .grid-container {
     grid-template-columns: 1fr;
   }
   .menu,
   .grid-section,
   .copy {
     grid-column: 1;
+  }
+
+  .login {
+    margin-right: inherit;
+    position: inherit;
+    right: inherit;
   }
 
   .grid-section {
